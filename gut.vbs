@@ -54,7 +54,6 @@ Do
             objFSO.DeleteFile screenshotFilePath
         End If
 
-        MsgBox "Screenshot sent successfully!"
     Else
         MsgBox "Screenshot file was not created. Please check your script."
     End If

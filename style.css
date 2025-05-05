@@ -1,0 +1,44 @@
+body {
+margin: 0;
+background-color: #ddf;
+display: flex;
+justify-content: center;
+
+height: 100vh;
+}
+#a {
+position: absolute;
+top: 20px;
+text-shadow: 2px 2px 5px #88faf4;
+font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 65px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } h3 { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } p { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } blockquote { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } pre { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5667px;
+
+}
+canvas {
+position:absolute;
+bottom: 35%;
+border: 2px solid #000000;
+background-color: #88faf4;
+border-radius: 15px;
+box-shadow: 3px 3px 5px rgb(0, 0, 0);
+}
+#hi {
+position: absolute;
+bottom: 50px;
+font-size: 15px;
+padding:5px;
+text-align-last: center;
+text-align: right;
+text-shadow: 2px 2px 5px #88faf4;
+}
+
+#yes {
+color: #000000;
+position: absolute;
+bottom: 20px;
+font-size: 15px;
+padding:5px;
+text-align-last: center;
+text-align: right;
+text-shadow: 2px 2px 5px #7cfff8;
+font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 20px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; } h3 { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px; } p { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 20px; } blockquote { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 21px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 30px; } pre { font-family: Rockwell Extra Bold, Rockwell Bold, monospace; font-size: 13px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 18.5667px;
+}
